@@ -1,4 +1,3 @@
-import re
 
 def get_default_emoji(e: str) -> str:
     """
