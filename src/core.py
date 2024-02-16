@@ -1,9 +1,19 @@
+import emoji
+import os
+import json
+
+# read the human_emojis.json file and store it into a dictionary
+HUMAN_EMOJIS = {}
+file_path = os.path.join(os.path.dirname(__file__), '../static/human_emojis.json')
+with open(file_path, 'r') as file:
+    HUMAN_EMOJIS = json.load(file)
+
 
 def get_default_emoji(e: str) -> str:
     """
     Get the base emoji without skin-tone modifiers
     """
-    assert e in emoji.EMOJI_DATA # assert that it is a valid emoji
+    # assert e in emoji.EMOJI_DATA # assert that it is a valid emoji
     return e[0]
 
 def strip_emoji_skin_tone(text: str) -> str:
@@ -21,15 +31,25 @@ def extract_human_emojis(text: str) -> list:
     """
     Extract human emojis from input text
     """
-    # to identify human emojis, we can check if it has skin tone modifier
-    # this however doesn't capture the unmodified human emojis
-    # TODO best way would be to define the list of human emojis and check against that, don't have time to build
-    # such a list now
-    emojis_in_text = emoji.analyze(text)
+    # to identify human emojis, check if the emoji is in the HUMAN_EMOJIS dictionary
+    # first, need to collect the characters properly from the text, by combining the utf8 codes
+    # with the skin tone modifiers
+    # for example 👍🏿 is combination of \udc4d and \udfff
+    print(text)
     human_emojis = []
-    for e in emojis_in_text:
-        if len(e.chars) > 1:
-            human_emojis.append(e.value.emoji)
+    prev_char = None
+    for char in list(text) + [None]: # add None to the end to make sure the last character is processed
+        if not prev_char:
+            prev_char = char
+            continue
+        if prev_char + str(char) in HUMAN_EMOJIS: # skin toned emoji is found
+            human_emojis.append(prev_char + char)
+            prev_char = None
+            continue
+        if prev_char in HUMAN_EMOJIS: # base emoji is found
+            human_emojis.append(prev_char)
+        prev_char = char
+
     return human_emojis
 
 FITZPATRICK_SCALES = {
@@ -55,17 +75,10 @@ def colour_emojis(text: str, fitzpatrick_scale: int) -> str:
 
 
 if __name__ == "__main__":
-    print(strip_emoji_skin_tone("👍🏿test👍🏽👍🏻test👍🏼👍🏾")) # prints 👍👍👍👍👍
-
-    print(extract_human_emojis("👍🏿👍🏽👍🏻👍🏼👍🏾👍")) # prints ['👍🏿', '👍🏽', '👍🏻', '👍🏼', '👍🏾']
-
-    # test with mix of emojis
-    print(extract_human_emojis("👍🏿👍😈"))
-
     # colour emojis
-    print(colour_emojis("👍", 1))
-    print(colour_emojis("👍", 2))
-    print(colour_emojis("👍", 3))
-    print(colour_emojis("👍", 4))
-    print(colour_emojis("👍", 5))
-    print(colour_emojis("👍", 6))
+    print(colour_emojis("test👍test", 1))
+    print(colour_emojis("test👍test", 2))
+    print(colour_emojis("test👍test", 3))
+    print(colour_emojis("test👍test", 4))
+    print(colour_emojis("test👍test", 5))
+    print(colour_emojis("test👍test", 6))

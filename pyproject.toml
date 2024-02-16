@@ -16,5 +16,10 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+
+dependencies = [
+    "emoji"
+]
+
 [project.urls]
-homepage = ""
+homepage = "https://github.com/henrybackman/emoji-tools-henry"
