@@ -1,5 +1,5 @@
 import unittest
-import src.core as emoji_tools
+import src.emoji_tools_henry.core as emoji_tools
 
 class TestEmojiTools(unittest.TestCase):
 

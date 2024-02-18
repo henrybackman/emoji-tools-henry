@@ -10,7 +10,7 @@ def extract_human_emojis():
     # 261D 1F3FB    ; RGI_Emoji_Modifier_Sequence  ; index pointing up: light skin tone  # E1.0   [1] (☝🏻)
     # at this point only interesting thing really is the utf8 codes of the human emojis
     # leaving the rest of the info for now as is
-    file_path = os.path.join(os.path.dirname(__file__), '../../static/emoji-modifier-sequences.txt')
+    file_path = os.path.join(os.path.dirname(__file__), '../static/emoji-modifier-sequences.txt')
     human_emojis = {}
     with open(file_path, 'r') as file:
         content = file.read()
@@ -29,7 +29,7 @@ def extract_human_emojis():
         human_emojis[base_emoji] = "Base version of " + base_emoji
 
     # save the human emojis as a json file
-    file_path = os.path.join(os.path.dirname(__file__), '../../static/human_emojis.json')
+    file_path = os.path.join(os.path.dirname(__file__), '../static/human_emojis.json')
     with open(file_path, 'w') as file:
         json.dump(human_emojis, file, indent=4)
 

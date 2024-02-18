@@ -71,7 +71,3 @@ def colour_emojis(text: str, fitzpatrick_scale: int) -> str:
         output_text += char # add the rest of the characters as is
 
     return output_text
-
-
-if __name__ == "__main__":
-    pass
