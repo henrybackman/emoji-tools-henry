@@ -7,4 +7,4 @@ packages = ["src"]
 
 [project]
 name = "emoji_tools_henry"
-version = "0.0.5"
+version = "0.0.6"
