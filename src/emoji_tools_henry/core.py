@@ -3,7 +3,7 @@ import json
 
 # read the human_emojis.json file and store it into a dictionary
 HUMAN_EMOJIS = {}
-file_path = os.path.join(os.path.dirname(__file__), '../static/human_emojis.json')
+file_path = os.path.join(os.path.dirname(__file__), './static/human_emojis.json')
 with open(file_path, 'r') as file:
     HUMAN_EMOJIS = json.load(file)
 
